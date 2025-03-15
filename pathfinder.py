@@ -38,27 +38,28 @@ def bfs(board_size, start, end, board):
     
     return None, None
 
+
 def ucs(board_size, start, end, board):
     rows, cols = board_size
     
-    queue = [(0, 0, start, [start])]
+    queue = [(0, "", start, [start])]
     visited = {start: 0}
     process = []
     
     while queue:
-        total_cost, i, (x, y), path = heapq.heappop(queue)
+        total_cost, moves, (x, y), path = heapq.heappop(queue)
         process.append((x, y))
         
         if (x, y) == end:
             return path, process
         
-        for i, (dx, dy) in enumerate(DIRS):
+        for idx, (dx, dy) in enumerate(DIRS):
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny] != 'X':
                 new_cost = total_cost + cost((x, y), (nx, ny), board)
                 if (nx, ny) not in visited or new_cost < visited[(nx, ny)]:
                     visited[(nx, ny)] = new_cost
-                    heapq.heappush(queue, (new_cost, i, (nx, ny), path + [(nx, ny)]))
+                    heapq.heappush(queue, (new_cost, moves + str(idx), (nx, ny), path + [(nx, ny)]))
     
     return None, None
     

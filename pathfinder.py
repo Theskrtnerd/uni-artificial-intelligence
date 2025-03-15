@@ -9,7 +9,7 @@ DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 modes = ["debug", "release"]
 algorithms = ["bfs", "ucs", "astar"]
-heuristics = ["euclidian", "manhattan"]
+heuristics = ["euclidean", "manhattan"]
 
 def cost(curr_pos, next_pos, board):
     return 1 + max(0, int(board[next_pos[0]][next_pos[1]]) - int(board[curr_pos[0]][curr_pos[1]]))
@@ -17,7 +17,7 @@ def cost(curr_pos, next_pos, board):
 def manhattan(start, end):
     return abs(start[0] - end[0]) + abs(start[1] - end[1])
 
-def euclidian(start, end):
+def euclidean(start, end):
     return (start[0] - end[0])**2 + (start[1] - end[1])**2
 
 def astar(board_size, start, end, board, heuristic):
@@ -185,8 +185,8 @@ def path_finder(mode, map, algorithm, heuristic):
     elif algorithm == "astar":
         if heuristic == "manhattan":
             path, process = astar(board_size, start_pos, end_pos, board, manhattan)
-        elif heuristic == "euclidian":
-            path, process = astar(board_size, start_pos, end_pos, board, euclidian)
+        elif heuristic == "euclidean":
+            path, process = astar(board_size, start_pos, end_pos, board, euclidean)
         else:
             print("Heuristic not implemented")
     else:

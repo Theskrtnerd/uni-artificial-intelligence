@@ -5,7 +5,7 @@ import heapq
 STUDENT_ID = 'a1901793'
 DEGREE = 'UG'
 
-DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+DIRS = [(1, 0), (0, -1), (0, 1), (-1, 0)]
 
 modes = ["debug", "release"]
 algorithms = ["bfs", "ucs", "astar"]
@@ -165,3 +165,26 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     path_finder(args.mode, args.map, args.algorithm, args.heuristic)
+
+# 7 2 4 X 3 3 1 1 1 6
+# 2 X 2 3 1 1 3 7 2 2
+# X 2 1 3 1 5 X X X X
+# 4 4 * * * * * * * *
+# X 3 * X 10 3 7 2 5 1
+# 7 1 * 2 2 1 5 2 1 1
+# * * * 3 3 5 4 4 5 4
+# * X 1 1 1 1 1 2 4 3
+# * 4 X X 3 3 5 4 4 1
+# 3 6 2 X X 1 3 1 3 7
+
+# Your Release Mode Output:
+# 7 2 4 X 3 3 1 1 1 6
+# 2 X 2 3 1 1 3 7 2 2
+# X 2 1 3 1 5 X X X X
+# 4 4 * * * * * * * *
+# X * * X 10 3 7 2 5 1
+# 7 * 3 2 2 1 5 2 1 1
+# * * 1 3 3 5 4 4 5 4
+# * X 1 1 1 1 1 2 4 3
+# * 4 X X 3 3 5 4 4 1
+# 3 6 2 X X 1 3 1 3 7

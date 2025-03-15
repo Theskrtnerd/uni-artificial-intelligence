@@ -23,12 +23,12 @@ def euclidian(start, end):
 def astar(board_size, start, end, board, heuristic):
     rows, cols = board_size
     
-    queue = [(0 + heuristic(start, end), 0, start, [start])]
+    queue = [(0 + heuristic(start, end), 0, "", start, [start])]
     visited = {start: 0}
     process = []
     
     while queue:
-        total_f, total_g, (x, y), path = heapq.heappop(queue)
+        total_f, total_g, moves, (x, y), path = heapq.heappop(queue)
         process.append((x, y))
         
         if (x, y) == end:
@@ -41,7 +41,7 @@ def astar(board_size, start, end, board, heuristic):
                 if (nx, ny) not in visited or new_g < visited[(nx, ny)]:
                     visited[(nx, ny)] = new_g
                     new_f = new_g + heuristic((nx, ny), end)
-                    heapq.heappush(queue, (new_f, new_g, (nx, ny), path + [(nx, ny)]))
+                    heapq.heappush(queue, (new_f, new_g, moves+str(idx), (nx, ny), path + [(nx, ny)]))
     
     return None, None
 

@@ -46,7 +46,7 @@ def ucs(board_size, start, end, board):
     process = []
     
     while queue:
-        total_cost, (x, y), path = heapq.heappop(queue)
+        total_cost, (y, x), path = heapq.heappop(queue)
         process.append((x, y))
         
         if (x, y) == end:
@@ -58,7 +58,7 @@ def ucs(board_size, start, end, board):
                 new_cost = total_cost + cost((x, y), (nx, ny), board)
                 if (nx, ny) not in visited or new_cost < visited[(nx, ny)]:
                     visited[(nx, ny)] = new_cost
-                    heapq.heappush(queue, (new_cost, (nx, ny), path + [(nx, ny)]))
+                    heapq.heappush(queue, (new_cost, (ny, nx), path + [(nx, ny)]))
     
     return None, None
     

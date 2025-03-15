@@ -46,7 +46,7 @@ def ucs(board_size, start, end, board):
     process = []
     
     while queue:
-        total_cost, (y, x), path = heapq.heappop(queue)
+        total_cost, i, (y, x), path = heapq.heappop(queue)
         process.append((x, y))
         
         if (x, y) == end:

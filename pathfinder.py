@@ -148,7 +148,7 @@ def path_finder(mode, map, algorithm, heuristic):
 
     if algorithm == "bfs":
         path, process = bfs(board_size, start_pos, end_pos, board)
-    if algorithm == "ucs":
+    elif algorithm == "ucs":
         path, process = ucs(board_size, start_pos, end_pos, board)
     else:
         print("Algorithm not implemented yet.")

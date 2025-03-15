@@ -5,7 +5,7 @@ import heapq
 STUDENT_ID = 'a1901793'
 DEGREE = 'UG'
 
-DIRS = [(1, 0), (0, -1), (0, 1), (-1, 0)]
+DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 modes = ["debug", "release"]
 algorithms = ["bfs", "ucs", "astar"]
@@ -41,7 +41,7 @@ def bfs(board_size, start, end, board):
 def ucs(board_size, start, end, board):
     rows, cols = board_size
     
-    queue = [(0, (start[1], start[0]), [start])]
+    queue = [(0, 0, start, [start])]
     visited = {start: 0}
     process = []
     
@@ -52,13 +52,13 @@ def ucs(board_size, start, end, board):
         if (x, y) == end:
             return path, process
         
-        for dx, dy in DIRS:
+        for i, (dx, dy) in enumerate(DIRS):
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny] != 'X':
                 new_cost = total_cost + cost((x, y), (nx, ny), board)
                 if (nx, ny) not in visited or new_cost < visited[(nx, ny)]:
                     visited[(nx, ny)] = new_cost
-                    heapq.heappush(queue, (new_cost, (ny, nx), path + [(nx, ny)]))
+                    heapq.heappush(queue, (new_cost, i, (nx, ny), path + [(nx, ny)]))
     
     return None, None
     

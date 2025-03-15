@@ -132,7 +132,7 @@ if __name__ == "__main__":
     parser.add_argument("mode", choices=modes)
     parser.add_argument("map", type=str)
     parser.add_argument("algorithm", choices=algorithms)
-    parser.add_argument("heuristic", choices=heuristics)
+    parser.add_argument("heuristic", nargs='?', choices=heuristics)
     
     args = parser.parse_args()
     

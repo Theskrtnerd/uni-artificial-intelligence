@@ -39,6 +39,7 @@ def bfs(board_size, start, end, board):
 def read_map(file_path):
     with open(file_path, 'r') as f:
         lines = f.readlines()
+        print(lines)
     
     board_size = tuple(map(int, lines[0].split()))
     start_pos = tuple(map(lambda x: int(x) - 1, lines[1].split()))

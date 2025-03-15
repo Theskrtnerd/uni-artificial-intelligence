@@ -1,8 +1,11 @@
 import argparse
 from collections import deque
+import heapq
 
 STUDENT_ID = 'a1901793'
 DEGREE = 'UG'
+
+DIRS = [(1,0), (-1,0), (0,-1), (0,1)]
 
 modes = ["debug", "release"]
 algorithms = ["bfs", "ucs", "astar"]
@@ -13,7 +16,6 @@ def cost(curr_pos, next_pos, board):
 
 def bfs(board_size, start, end, board):
     rows, cols = board_size
-    directions = [(1,0), (-1,0), (0,-1), (0,1)]
     
     queue = deque([(start, [start], 0)])
     visited = {start: 0}
@@ -26,7 +28,7 @@ def bfs(board_size, start, end, board):
         if (x, y) == end:
             return path, process
         
-        for dx, dy in directions:
+        for dx, dy in DIRS:
             nx, ny = x + dx, y + dy
             if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny] != 'X':
                 new_cost = total_cost + cost((x, y), (nx, ny), board)
@@ -35,6 +37,31 @@ def bfs(board_size, start, end, board):
                     queue.append(((nx, ny), path + [(nx, ny)], new_cost))
     
     return None, None
+
+def ucs(board_size, start, end, board):
+    rows, cols = board_size
+    
+    queue = [(0, start, [start])]
+    visited = {start: 0}
+    process = []
+    
+    while queue:
+        total_cost, (x, y), path = heapq.heappop(queue)
+        process.append((x, y))
+        
+        if (x, y) == end:
+            return path, process
+        
+        for dx, dy in DIRS:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny] != 'X':
+                new_cost = total_cost + cost((x, y), (nx, ny), board)
+                if (nx, ny) not in visited or new_cost < visited[(nx, ny)]:
+                    visited[(nx, ny)] = new_cost
+                    heapq.heappush(queue, (new_cost, (nx, ny), path + [(nx, ny)]))
+    
+    return None, None
+    
 
 def read_map(file_path):
     with open(file_path, 'r') as f:
@@ -121,6 +148,8 @@ def path_finder(mode, map, algorithm, heuristic):
 
     if algorithm == "bfs":
         path, process = bfs(board_size, start_pos, end_pos, board)
+    if algorithm == "ucs":
+        path, process = ucs(board_size, start_pos, end_pos, board)
     else:
         print("Algorithm not implemented yet.")
     

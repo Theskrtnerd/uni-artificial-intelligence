@@ -5,7 +5,7 @@ import heapq
 STUDENT_ID = 'a1901793'
 DEGREE = 'UG'
 
-DIRS = [(1,0), (-1,0), (0,-1), (0,1)]
+DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 modes = ["debug", "release"]
 algorithms = ["bfs", "ucs", "astar"]

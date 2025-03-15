@@ -41,7 +41,7 @@ def bfs(board_size, start, end, board):
 def ucs(board_size, start, end, board):
     rows, cols = board_size
     
-    queue = [(0, start, [start])]
+    queue = [(0, (start[1], start[0]), [start])]
     visited = {start: 0}
     process = []
     

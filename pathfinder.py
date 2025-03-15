@@ -1,6 +1,7 @@
 import argparse
 from collections import deque
 import heapq
+import numpy as np
 
 STUDENT_ID = 'a1901793'
 DEGREE = 'UG'
@@ -18,7 +19,7 @@ def manhattan(start, end):
     return abs(start[0] - end[0]) + abs(start[1] - end[1])
 
 def euclidean(start, end):
-    return (start[0] - end[0])**2 + (start[1] - end[1])**2
+    return np.sqrt((start[0] - end[0])**2 + (start[1] - end[1])**2)
 
 def astar(board_size, start, end, board, heuristic):
     rows, cols = board_size

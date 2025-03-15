@@ -14,6 +14,37 @@ heuristics = ["euclidian", "manhattan"]
 def cost(curr_pos, next_pos, board):
     return 1 + max(0, int(board[next_pos[0]][next_pos[1]]) - int(board[curr_pos[0]][curr_pos[1]]))
 
+def manhattan(start, end):
+    return abs(start[0] - end[0]) + abs(start[1] - end[1])
+
+def euclidian(start, end):
+    return (start[0] - end[0])**2 + (start[1] - end[1])**2
+
+def astar(board_size, start, end, board, heuristic):
+    rows, cols = board_size
+    
+    queue = [(0 + heuristic(start, end), 0, start, [start])]
+    visited = {start: 0}
+    process = []
+    
+    while queue:
+        total_f, total_g, (x, y), path = heapq.heappop(queue)
+        process.append((x, y))
+        
+        if (x, y) == end:
+            return path, process
+        
+        for idx, (dx, dy) in enumerate(DIRS):
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny] != 'X':
+                new_g = total_g + cost((x, y), (nx, ny), board)
+                if (nx, ny) not in visited or new_g < visited[(nx, ny)]:
+                    visited[(nx, ny)] = new_g
+                    new_f = new_g + heuristic((nx, ny), end)
+                    heapq.heappush(queue, (new_f, new_g, (nx, ny), path + [(nx, ny)]))
+    
+    return None, None
+
 def bfs(board_size, start, end, board):
     rows, cols = board_size
     
@@ -151,6 +182,13 @@ def path_finder(mode, map, algorithm, heuristic):
         path, process = bfs(board_size, start_pos, end_pos, board)
     elif algorithm == "ucs":
         path, process = ucs(board_size, start_pos, end_pos, board)
+    elif algorithm == "astar":
+        if heuristic == "manhattan":
+            path, process = astar(board_size, start_pos, end_pos, board, manhattan)
+        elif heuristic == "euclidian":
+            path, process = astar(board_size, start_pos, end_pos, board, euclidian)
+        else:
+            print("Heuristic not implemented")
     else:
         print("Algorithm not implemented yet.")
     

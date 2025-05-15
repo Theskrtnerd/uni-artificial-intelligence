@@ -225,7 +225,7 @@ if __name__ == '__main__':
 
     scores_history = []
     mileage_history = []
-    best_avg_score = -float('inf')
+    best_avg_score = 5
 
     for episode in range(episodes):
         env.play(player=agent)
@@ -235,7 +235,7 @@ if __name__ == '__main__':
         print(env.score)
         print(env.mileage)
 
-        current_avg_score = np.mean(scores_history[-10:]) if len(scores_history) >= 10 else np.mean(scores_history)
+        current_avg_score = np.mean(scores_history[-100:]) if len(scores_history) >= 100 else np.mean(scores_history)
         if current_avg_score > best_avg_score and len(scores_history) >= 50:
             best_avg_score = current_avg_score
             best_model_path = f'my_model.ckpt'

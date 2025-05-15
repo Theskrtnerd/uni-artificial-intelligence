@@ -225,7 +225,7 @@ if __name__ == '__main__':
 
     scores_history = []
     mileage_history = []
-    best_avg_score = 5
+    best_avg_score = -float('inf')
 
     for episode in range(episodes):
         env.play(player=agent)
@@ -235,12 +235,22 @@ if __name__ == '__main__':
         print(env.score)
         print(env.mileage)
 
-        current_avg_score = np.mean(scores_history[-100:]) if len(scores_history) >= 100 else np.mean(scores_history)
-        if current_avg_score > best_avg_score and len(scores_history) >= 50:
-            best_avg_score = current_avg_score
+        # current_avg_score = np.mean(scores_history[-100:]) if len(scores_history) >= 100 else np.mean(scores_history)
+        # if current_avg_score > best_avg_score and len(scores_history) >= 50:
+        #     best_avg_score = current_avg_score
+        #     best_model_path = f'my_model.ckpt'
+        #     agent.save_model(path=best_model_path)
+        #     print(f"New best average score model saved: {best_model_path} (Avg Score: {best_avg_score:.2f})")
+
+        score_threshold = 5
+        recent_scores = scores_history[-100:] if len(scores_history) >= 100 else scores_history
+        high_score_count = sum(score >= score_threshold for score in recent_scores)
+        
+        if high_score_count > best_avg_score and len(scores_history) >= 50:
+            best_avg_score = high_score_count
             best_model_path = f'my_model.ckpt'
             agent.save_model(path=best_model_path)
-            print(f"New best average score model saved: {best_model_path} (Avg Score: {best_avg_score:.2f})")
+            print(f"New best model saved: {best_model_path} (High scores: {high_score_count}/{len(recent_scores)})")
 
         agent.previous_state = None
         agent.previous_action = None

@@ -121,17 +121,6 @@ class MyAgent:
             
             return survival_reward + score_bonus
 
-            mileage_bonus = 0.0
-            if self.previous_state:
-                mileage_increase = state['mileage'] - self.previous_state['mileage']
-                if mileage_increase > 0:
-                    mileage_bonus = 0.01 * mileage_increase
-                    mileage_bonus = min(mileage_bonus, 0.1)
-            
-            total_reward = survival_reward - vertical_offset_penalty + score_bonus + mileage_bonus
-            
-            return total_reward
-
     def choose_action(self, state: dict, action_table: dict) -> int:
         state_tensor = self.build_state(state)
         
@@ -191,7 +180,7 @@ class MyAgent:
                 next_q_values = self.network2(next_states).max(1)[0]
                 target_q_values = rewards + (1 - dones) * self.discount_factor * next_q_values
 
-            q_targets = current_q_values.clone().detach()  # Use clone() for a proper copy
+            q_targets = current_q_values.clone().detach()
             weights = torch.zeros_like(q_targets)
             
             for i in range(self.n):
@@ -204,7 +193,7 @@ class MyAgent:
             if self.global_step > 0 and self.global_step % 100 == 0:
                 MyAgent.update_network_model(net_to_update=self.network2, net_as_source=self.network)
             
-            if self.epsilon > self.epsilon_min:  # Use epsilon_min
+            if self.epsilon > self.epsilon_min:
                 self.epsilon *= self.epsilon_decay
                 self.epsilon = max(self.epsilon_min, self.epsilon)
 

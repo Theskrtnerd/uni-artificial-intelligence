@@ -39,7 +39,7 @@ class MyAgent:
         self.discount_factor = 0.99
 
         self.tau = 1e-3
-        self._global_step = 0
+        self.global_step = 0
 
         self.previous_state = None
         self.previous_action = None
@@ -135,7 +135,7 @@ class MyAgent:
         return a_t
 
     def receive_after_action_observation(self, state: dict, action_table: dict) -> None:
-        self._global_step += 1
+        self.global_step += 1
         
         if self.mode != 'train' or self.previous_state is None:
             self.previous_state = state
@@ -179,7 +179,7 @@ class MyAgent:
             
             self.network.fit_step(states.numpy(), q_targets, weights)
 
-            if self._global_step % 4 == 0:
+            if self.global_step % 4 == 0:
                 self.soft_update(self.network, self.network2)
             
             if self.epsilon > 0.01:
@@ -231,9 +231,12 @@ if __name__ == '__main__':
         env.play(player=agent)
         scores_history.append(env.score)
         mileage_history.append(env.mileage)
+        score_threshold = 5
 
-        print(env.score)
-        print(env.mileage)
+        if env.score >= score_threshold:
+            print(agent.global_step)
+            print(env.score)
+            print(env.mileage)
 
         # current_avg_score = np.mean(scores_history[-100:]) if len(scores_history) >= 100 else np.mean(scores_history)
         # if current_avg_score > best_avg_score and len(scores_history) >= 50:
@@ -242,7 +245,6 @@ if __name__ == '__main__':
         #     agent.save_model(path=best_model_path)
         #     print(f"New best average score model saved: {best_model_path} (Avg Score: {best_avg_score:.2f})")
 
-        score_threshold = 5
         recent_scores = scores_history[-100:] if len(scores_history) >= 100 else scores_history
         high_score_count = sum(score >= score_threshold for score in recent_scores)
         
